@@ -11,10 +11,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta  # JWT Token Süresi İçin
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -25,8 +25,7 @@ SECRET_KEY = 'django-insecure-*m85cr5t#%$hpx*1))zmb+frbjtpn01*2!sao%st-ivhj!r^-3
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']  # 🔹 Boş liste yerine localhost eklendi.
 
 # Application definition
 
@@ -38,8 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'main',  # Daha önce eklenmişti
-    'core',  # Bunu ekleyerek modelimizi tanıtıyoruz!
+    'main',
+    'rest_framework',  # Django REST Framework
+    'rest_framework_simplejwt',  # 🔹 JWT Yetkilendirme eklendi!
+    'core',
 ]
 
 MIDDLEWARE = [
@@ -124,3 +125,24 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# 🟢 Django REST Framework Yetkilendirme ve İzinler Ayarları
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+       'rest_framework.permissions.AllowAny',  # 🔹 şimdi herkese açık
+    ),
+}
+
+# 🟢 JWT Ayarları (Token Geçerlilik Süresi)
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=1),  # JWT Token 1 saat geçerli olacak
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),  # Refresh Token 7 gün geçerli olacak
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+    'AUTH_HEADER_TYPES': ('Bearer',),  # 🔹 API isteklerinde 'Authorization: Bearer <token>' kullanılacak
+}
