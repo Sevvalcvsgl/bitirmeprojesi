@@ -130,11 +130,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',  # 🔹 Tarayıcıdan giriş için eklendi!
     ),
     'DEFAULT_PERMISSION_CLASSES': (
-       'rest_framework.permissions.AllowAny',  # 🔹 şimdi herkese açık
+        'rest_framework.permissions.AllowAny',
     ),
 }
+
 
 # 🟢 JWT Ayarları (Token Geçerlilik Süresi)
 SIMPLE_JWT = {

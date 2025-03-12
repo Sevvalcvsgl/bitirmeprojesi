@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User  # Kullanıcı modeli
 
 class Place(models.Model):
     CATEGORY_CHOICES = [
@@ -16,3 +17,13 @@ class Place(models.Model):
 
     def __str__(self):
         return self.name
+
+class Review(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)  # Yorumu yapan kullanıcı
+    place = models.ForeignKey(Place, on_delete=models.CASCADE, related_name="reviews")  # Yoruma ait mekan
+    comment = models.TextField()  # Kullanıcının yorumu
+    rating = models.IntegerField()  # 1-5 arasında bir puan
+    created_at = models.DateTimeField(auto_now_add=True)  # Yorumun yapıldığı zaman
+
+    def __str__(self):
+        return f"{self.user.username} - {self.place.name} - {self.rating}⭐"
