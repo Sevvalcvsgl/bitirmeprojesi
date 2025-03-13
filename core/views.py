@@ -9,14 +9,26 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 from .models import Place, Review
 from .serializers import UserSerializer, ReviewSerializer
+from rest_framework.pagination import PageNumberPagination #sayfalama işleminitanımlamak için
 
+
+
+# 🟢 Özel Sayfalama Sınıfı (Her sayfada 10 öğe olacak)
+class CustomPagination(PageNumberPagination):
+    page_size = 10  # Varsayılan olarak her sayfada 5 kayıt göster
+    page_size_query_param = 'page_size'  # Kullanıcı isterse ?page_size=20 ile değiştirebilir
+    max_page_size = 100  # Maksimum 100 kayıt gösterilebilir
 
 # 🟢 Mekan Listeleme Fonksiyonu (Sadece giriş yapmış kullanıcılar erişebilir!)
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def place_list(request):
-    places = list(Place.objects.all().values())
-    return JsonResponse(places, safe=False, json_dumps_params={'ensure_ascii': False})  
+
+    places = Place.objects.all()  # QuerySet olarak çağır
+    paginator = CustomPagination()  # Sayfalama nesnesi oluştur
+    result_page = paginator.paginate_queryset(places, request)  # Sayfalama uygula
+
+    return paginator.get_paginated_response(list(result_page.values()))  # Sayfalı yanıt döndür
 
 
 # 🟢 Kullanıcı Kayıt Fonksiyonu
@@ -119,7 +131,10 @@ def update_review(request, review_id):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def place_reviews(request, place_id):
-    place = get_object_or_404(Place, id=place_id)
-    reviews = Review.objects.filter(place=place)
-    serializer = ReviewSerializer(reviews, many=True)
-    return Response(serializer.data, status=200)
+ place = get_object_or_404(Place, id=place_id)
+    reviews = Review.objects.filter(place=place)  # Yorumları çek
+    paginator = CustomPagination()  # Sayfalama nesnesi oluştur
+    result_page = paginator.paginate_queryset(reviews, request)  # Sayfalama uygula
+
+    serializer = ReviewSerializer(result_page, many=True)  # JSON formatına çevir
+    return paginator.get_paginated_response(serializer.data)  # Sayfalı yanıt döndür
