@@ -77,6 +77,43 @@ def add_review(request, place_id):
 
     return Response(ReviewSerializer(review).data, status=201)
 
+# 🟢 Kullanıcı Yorum Silme Fonksiyonu (Sadece giriş yapmış kullanıcılar erişebilir)
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_review(request, review_id):
+    try:
+        review = Review.objects.get(id=review_id)  # Yorum bul
+    except Review.DoesNotExist:
+        return Response({"error": "Yorum bulunamadı!"}, status=404)
+
+    # Yorumun sahibiyle giriş yapmış kullanıcıyı karşılaştırıyoruz
+    if review.user != request.user:
+        return Response({"error": "Bu yorumu silemezsiniz, çünkü bu sizin yorumunuz değil!"}, status=403)
+
+    review.delete()  # Yorum sil
+    return Response({"message": "Yorum başarıyla silindi!"}, status=200)
+
+
+# 🟢 Kullanıcı Yorum Güncelleme Fonksiyonu (Sadece giriş yapmış kullanıcılar erişebilir)
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def update_review(request, review_id):
+    try:
+        review = Review.objects.get(id=review_id)  # Yorum bul
+    except Review.DoesNotExist:
+        return Response({"error": "Yorum bulunamadı!"}, status=404)
+
+    # Yorumun sahibiyle giriş yapmış kullanıcıyı karşılaştırıyoruz
+    if review.user != request.user:
+        return Response({"error": "Bu yorumu güncelleyemezsiniz, çünkü bu sizin yorumunuz değil!"}, status=403)
+
+    # Yorum verisini güncelliyoruz
+    serializer = ReviewSerializer(review, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()  # Değişiklikleri kaydet
+        return Response({"message": "Yorum başarıyla güncellendi!"}, status=200)
+    return Response(serializer.errors, status=400)
+
 
 # 🟢 Mekana Ait Yorumları Listeleme Fonksiyonu (Sadece giriş yapmış kullanıcılar erişebilir)
 @api_view(['GET'])
