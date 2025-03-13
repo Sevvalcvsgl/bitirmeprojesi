@@ -31,3 +31,10 @@ class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = ['id', 'user', 'place', 'comment', 'rating', 'created_at']
+        
+ # Yorum güncelleme işlemi için sadece 'comment' ve 'rating' alanlarının güncellenmesini sağlayalım
+    def update(self, instance, validated_data):
+        instance.comment = validated_data.get('comment', instance.comment)
+        instance.rating = validated_data.get('rating', instance.rating)
+        instance.save()
+        return instance
