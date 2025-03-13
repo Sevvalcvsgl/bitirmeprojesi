@@ -23,8 +23,13 @@ class CustomPagination(PageNumberPagination):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def place_list(request):
-
+    
+     category_filter = request.GET.get('category')  # 🟡 Kategori parametresini alıyoruz
     places = Place.objects.all()  # QuerySet olarak çağır
+    if category_filter:  # 🟡 Kategoriye göre filtreleme yapıyoruz
+        places = places.filter(category=category_filter)
+    # 🟡 Puanlarına göre sıralama yapıyoruz (yüksekten düşüğe)
+    places = places.order_by('-rating')  
     paginator = CustomPagination()  # Sayfalama nesnesi oluştur
     result_page = paginator.paginate_queryset(places, request)  # Sayfalama uygula
 
