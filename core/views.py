@@ -131,10 +131,11 @@ def update_review(request, review_id):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def place_reviews(request, place_id):
- place = get_object_or_404(Place, id=place_id)
+    place = get_object_or_404(Place, id=place_id)  # Mekanı bul
     reviews = Review.objects.filter(place=place)  # Yorumları çek
     paginator = CustomPagination()  # Sayfalama nesnesi oluştur
     result_page = paginator.paginate_queryset(reviews, request)  # Sayfalama uygula
 
     serializer = ReviewSerializer(result_page, many=True)  # JSON formatına çevir
     return paginator.get_paginated_response(serializer.data)  # Sayfalı yanıt döndür
+
