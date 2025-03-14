@@ -7,6 +7,17 @@ class Place(models.Model):
         ('family', 'Aile Kafesi'),
         ('romantic', 'Romantik Mekan'),
         ('casual', 'Sıradan Kafe'),
+        ('luxury', 'Lüks Kafe'),
+        ('outdoor', 'Açık Hava Mekanı'),
+        ('vegan', 'Vegan Dostu Kafe'),
+         ('pet_friendly', 'Evcil Hayvan Dostu'),
+        ('breakfast', 'Kahvaltı Mekanı'),
+        ('dessert', 'Tatlıcı / Pastane'),
+        ('book_cafe', 'Kitap Kafesi'),
+        ('cozy', 'Samimi ve Sakin Mekan'),
+        ('fast_food', 'Hızlı Yemek'),
+        ('themed', 'Tematik Kafe'),
+        ('music', 'Canlı Müzikli Mekan'),   
     ]
 
     name = models.CharField(max_length=255)
