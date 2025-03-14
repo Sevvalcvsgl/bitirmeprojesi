@@ -24,16 +24,41 @@ class CustomPagination(PageNumberPagination):
 @permission_classes([IsAuthenticated])
 def place_list(request):
     
-     category_filter = request.GET.get('category')  # 🟡 Kategori parametresini alıyoruz
-    places = Place.objects.all()  # QuerySet olarak çağır
-    if category_filter:  # 🟡 Kategoriye göre filtreleme yapıyoruz
-        places = places.filter(category=category_filter)
-    # 🟡 Puanlarına göre sıralama yapıyoruz (yüksekten düşüğe)
-    places = places.order_by('-rating')  
-    paginator = CustomPagination()  # Sayfalama nesnesi oluştur
-    result_page = paginator.paginate_queryset(places, request)  # Sayfalama uygula
+      category_filter = request.GET.get('category')  # 🟡 Kategori parametresi
+    min_rating = request.GET.get('min_rating')  # 🟡 Minimum puan filtresi
+    search_query = request.GET.get('search')  # 🟡 Mekan adıyla arama
+    location_filter = request.GET.get('location')  # 🟡 Konum filtresi
+    sort_by = request.GET.get('sort_by', '-rating')  # 🟡 Varsayılan olarak puana göre azalan sıralama
 
-    return paginator.get_paginated_response(list(result_page.values()))  # Sayfalı yanıt döndür
+    places = Place.objects.all()
+
+    # 🟡 Kategori filtresi (birden fazla kategori seçilebilir: ?category=study,romantic)
+    if category_filter:
+        categories = category_filter.split(',')  # Virgülle ayrılmış kategorileri liste yap
+        places = places.filter(category__in=categories)
+
+    # 🟡 Minimum puan filtresi (Örn: ?min_rating=4)
+    if min_rating:
+        try:
+            min_rating = float(min_rating)
+            places = places.filter(rating__gte=min_rating)
+        except ValueError:
+            return Response({"error": "Geçersiz min_rating değeri!"}, status=400)
+
+    # 🟡 Mekan adıyla arama (Örn: ?search=Starbucks)
+    if search_query:
+        places = places.filter(name__icontains=search_query)
+
+    # 🟡 Konum filtresi (Örn: ?location=İstanbul)
+    if location_filter:
+        places = places.filter(location__icontains=location_filter)
+
+    # 🟡 Sıralama filtresi (Örn: ?sort_by=total_reviews) 
+    valid_sort_fields = ['name', '-name', 'rating', '-rating', 'total_reviews', '-total_reviews']
+    if sort_by in valid_sort_fields:
+        places = places.order_by(sort_by)
+    else:
+        places = places.order_by('-rating')  # Varsayılan olarak puana göre sıralama
 
 
 # 🟢 Kullanıcı Kayıt Fonksiyonu
