@@ -140,21 +140,28 @@ def delete_review(request, review_id):
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def update_review(request, review_id):
-    try:
-        review = Review.objects.get(id=review_id)  # Yorum bul
-    except Review.DoesNotExist:
-        return Response({"error": "Yorum bulunamadı!"}, status=404)
+    review = get_object_or_404(Review, id=review_id)  # 🟡 Yorum bul (get yerine get_object_or_404 kullanıldı)
 
-    # Yorumun sahibiyle giriş yapmış kullanıcıyı karşılaştırıyoruz
+    # 🟡 Kullanıcının kendi yorumunu güncellemesini sağlıyoruz
     if review.user != request.user:
-        return Response({"error": "Bu yorumu güncelleyemezsiniz, çünkü bu sizin yorumunuz değil!"}, status=403)
+        return Response({"error": "Bu yorumu güncelleyemezsiniz, çünkü sizin yorumunuz değil!"}, status=403)
 
-    # Yorum verisini güncelliyoruz
+    # 🟡 Gelen veriler ile yorum güncelleniyor
     serializer = ReviewSerializer(review, data=request.data, partial=True)
     if serializer.is_valid():
-        serializer.save()  # Değişiklikleri kaydet
-        return Response({"message": "Yorum başarıyla güncellendi!"}, status=200)
-    return Response(serializer.errors, status=400)
+        serializer.save()
+
+        # 🟡 Ortalama puanı güncelle
+        place = review.place
+        all_reviews = Review.objects.filter(place=place)
+        place.rating = sum(r.rating for r in all_reviews) / len(all_reviews) if all_reviews else 0
+        place.total_reviews = all_reviews.count()
+        place.save()
+
+        return Response({"message": "Yorum başarıyla güncellendi!", "updated_review": serializer.data}, status=200)
+    
+         return Response(serializer.errors, status=400)
+
 
 
 # 🟢 Mekana Ait Yorumları Listeleme Fonksiyonu (Sadece giriş yapmış kullanıcılar erişebilir)
