@@ -29,6 +29,9 @@ def place_list(request):
     search_query = request.GET.get('search')  # 🟡 Mekan adıyla arama
     location_filter = request.GET.get('location')  # 🟡 Konum filtresi
     sort_by = request.GET.get('sort_by', '-rating')  # 🟡 Varsayılan olarak puana göre azalan sıralama
+    price_filter = request.GET.get('price')
+    wifi_filter = request.GET.get('wifi')
+
 
     places = Place.objects.all()
 
@@ -52,6 +55,18 @@ def place_list(request):
     # 🟡 Konum filtresi (Örn: ?location=İstanbul)
     if location_filter:
         places = places.filter(location__icontains=location_filter)
+
+    # 🟡 Fiyat filtresi (Örn: ?price=low,medium,high)
+    if price_filter:
+        price_levels = price_filter.split(',')
+        places = places.filter(price__in=price_levels)
+
+    # 🟡 Wi-Fi filtresi (Örn: ?wifi=true veya ?wifi=false)
+    if wifi_filter is not None:
+        if wifi_filter.lower() == "true":
+            places = places.filter(has_wifi=True)
+        elif wifi_filter.lower() == "false":
+            places = places.filter(has_wifi=False)
 
     # 🟡 Sıralama filtresi (Örn: ?sort_by=total_reviews) 
     valid_sort_fields = ['name', '-name', 'rating', '-rating', 'total_reviews', '-total_reviews']
