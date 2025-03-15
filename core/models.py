@@ -51,3 +51,8 @@ class FavoritePlace(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.place.name} (Favori)"
+#konum entegrasyonu        
+class Place(models.Model):
+    name = models.CharField(max_length=255)
+    latitude = models.FloatField()  # Enlem
+    longitude = models.FloatField()  # Boylam
