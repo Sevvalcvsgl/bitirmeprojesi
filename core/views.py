@@ -10,6 +10,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from .models import Place, Review
 from .serializers import UserSerializer, ReviewSerializer
 from rest_framework.pagination import PageNumberPagination #sayfalama işleminitanımlamak için
+from .models import Place, FavoritePlace  # FavoritePlace modelini ekledik!
 
 
 
@@ -190,4 +191,19 @@ def place_reviews(request, place_id):
 
     serializer = ReviewSerializer(result_page, many=True)  # JSON formatına çevir
     return paginator.get_paginated_response(serializer.data)  # Sayfalı yanıt döndür
+    
+# 🟢 Favorilere Ekleme & Çıkarma Fonksiyonu
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def toggle_favorite(request, place_id):
+    place = get_object_or_404(Place, id=place_id)
+    user = request.user
 
+    # Kullanıcı daha önce eklemiş mi?
+    favorite, created = FavoritePlace.objects.get_or_create(user=user, place=place)
+
+    if not created:
+        favorite.delete()
+        return Response({"message": "Favoriden kaldırıldı!"}, status=200)
+    
+    return Response({"message": "Favorilere eklendi!"}, status=201)
