@@ -40,3 +40,14 @@ class Review(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.place.name} - {self.rating}⭐"
+
+# 🟢 Kullanıcı Favorileri Modeli
+class FavoritePlace(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="favorites")  # Kullanıcı
+    place = models.ForeignKey(Place, on_delete=models.CASCADE, related_name="favorited_by")  # Favori mekan
+
+    class Meta:
+        unique_together = ('user', 'place')  # Aynı kullanıcı bir mekanı birden fazla ekleyemesin
+
+    def __str__(self):
+        return f"{self.user.username} - {self.place.name} (Favori)"
