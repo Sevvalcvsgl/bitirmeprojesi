@@ -207,3 +207,17 @@ def toggle_favorite(request, place_id):
         return Response({"message": "Favoriden kaldırıldı!"}, status=200)
     
     return Response({"message": "Favorilere eklendi!"}, status=201)
+
+#konum
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def place_detail(request, place_id):
+    place = get_object_or_404(Place, id=place_id)
+    data = {
+        "id": place.id,
+        "name": place.name,
+        "latitude": place.latitude,
+        "longitude": place.longitude,
+    }
+    return Response(data, status=200)
+
