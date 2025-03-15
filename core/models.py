@@ -25,6 +25,8 @@ class Place(models.Model):
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
     rating = models.FloatField(default=0.0)
     total_reviews = models.IntegerField(default=0)
+    price_range = models.CharField(max_length=20, choices=[('cheap', 'Uygun'), ('medium', 'Orta'), ('expensive', 'Pahalı')])
+    has_wifi = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
