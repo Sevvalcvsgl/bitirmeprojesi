@@ -25,7 +25,7 @@ class CustomPagination(PageNumberPagination):
 @permission_classes([IsAuthenticated])
 def place_list(request):
     
-      category_filter = request.GET.get('category')  # 🟡 Kategori parametresi
+    category_filter = request.GET.get('category')  # 🟡 Kategori parametresi
     min_rating = request.GET.get('min_rating')  # 🟡 Minimum puan filtresi
     search_query = request.GET.get('search')  # 🟡 Mekan adıyla arama
     location_filter = request.GET.get('location')  # 🟡 Konum filtresi
