@@ -176,7 +176,8 @@ def update_review(request, review_id):
 
         return Response({"message": "Yorum başarıyla güncellendi!", "updated_review": serializer.data}, status=200)
     
-         return Response(serializer.errors, status=400)
+        return Response(serializer.errors, status=400)
+
 
 
 
