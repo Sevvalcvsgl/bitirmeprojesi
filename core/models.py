@@ -28,6 +28,10 @@ class Place(models.Model):
     price_range = models.CharField(max_length=20, choices=[('cheap', 'Uygun'), ('medium', 'Orta'), ('expensive', 'Pahalı')])
     has_wifi = models.BooleanField(default=False)
 
+      # 🟢 Yeni eklenen alanlar:
+    latitude = models.FloatField(null=True, blank=True)
+    longitude = models.FloatField(null=True, blank=True)
+
     def __str__(self):
         return self.name
 
