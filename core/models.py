@@ -10,7 +10,7 @@ class Place(models.Model):
         ('luxury', 'Lüks Kafe'),
         ('outdoor', 'Açık Hava Mekanı'),
         ('vegan', 'Vegan Dostu Kafe'),
-         ('pet_friendly', 'Evcil Hayvan Dostu'),
+        ('pet_friendly', 'Evcil Hayvan Dostu'),
         ('breakfast', 'Kahvaltı Mekanı'),
         ('dessert', 'Tatlıcı / Pastane'),
         ('book_cafe', 'Kitap Kafesi'),
@@ -25,7 +25,7 @@ class Place(models.Model):
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
     rating = models.FloatField(default=0.0)
     total_reviews = models.IntegerField(default=0)
-    price_range = models.CharField(max_length=20, choices=[('cheap', 'Uygun'), ('medium', 'Orta'), ('expensive', 'Pahalı')])
+    price_range = models.CharField(max_length=20, choices=[('cheap', 'Uygun'), ('medium', 'Orta'), ('expensive', 'Pahalı')], default='medium')
     has_wifi = models.BooleanField(default=False)
 
       # 🟢 Yeni eklenen alanlar:
@@ -55,8 +55,3 @@ class FavoritePlace(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.place.name} (Favori)"
-#konum entegrasyonu        
-class Place(models.Model):
-    name = models.CharField(max_length=255)
-    latitude = models.FloatField()  # Enlem
-    longitude = models.FloatField()  # Boylam

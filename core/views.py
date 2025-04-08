@@ -1,5 +1,6 @@
 import json
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import authenticate
@@ -222,3 +223,6 @@ def place_detail(request, place_id):
     }
     return Response(data, status=200)
 
+@csrf_exempt
+def test_api(request):
+    return JsonResponse({'message': 'Merhaba Flutter!'})

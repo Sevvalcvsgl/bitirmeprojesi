@@ -1,0 +1,48 @@
+# Python cache dosyaları
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Sanal ortam klasörü
+venv/
+
+# Django veritabanı dosyası
+db.sqlite3
+
+# Ortam değişkenleri
+.env
+
+# VSCode klasörü
+.vscode/
+
+# MacOS özel dosyalar
+.DS_Store
+
+# Windows thumbnail cache
+Thumbs.db
+
+# PyCharm IDE klasörü
+.idea/
+
+# Migration cache (isteğe bağlı)
+*.log
+
+# Test coverage
+htmlcov/
+.coverage
+coverage.xml
+*.cover
+.cache
+
+# mypy type checking
+.mypy_cache/
+
+# pipenv
+Pipfile.lock
+
+# pyenv
+.python-version
+
+# static/media uploads (isteğe bağlı)
+staticfiles/
+media/
