@@ -4,6 +4,7 @@ from . import views  # views modülünü ekledik
 
 
 
+
 urlpatterns = [
     # 🟢 Mekan Listeleme ve Filtreleme
     path('places/', views.place_list, name='place_list'),  
@@ -21,6 +22,11 @@ urlpatterns = [
     path('register/', views.register_user, name='register'),
     path('login/', views.login_user, name='login'),
     
-    path('hello/', views.test_api),  # http://127.0.0.1:8000/api/hello/ adresine bu fonksiyon gider #entegreiçinde
+    path('categories/', views.category_list, name='category_list'),  # BUNU EKLEMELİSİN!
+
+   # path('hello/', views.test_api),  # http://127.0.0.1:8000/api/hello/ adresine bu fonksiyon gider #entegreiçinde
+  
+  
+  
   
 ]

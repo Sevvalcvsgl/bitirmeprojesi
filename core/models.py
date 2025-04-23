@@ -4,8 +4,8 @@ from django.contrib.auth.models import User  # Kullanıcı modeli
 class Place(models.Model):
     CATEGORY_CHOICES = [
         ('study', 'Çalışma Kafesi'),
-        ('family', 'Aile Kafesi'),
-        ('romantic', 'Romantik Mekan'),
+        ('family', 'Family Places'),
+        ('romantic', 'Romantic Place'),
         ('casual', 'Sıradan Kafe'),
         ('luxury', 'Lüks Kafe'),
         ('outdoor', 'Açık Hava Mekanı'),
