@@ -3,21 +3,21 @@ from django.contrib.auth.models import User  # Kullanıcı modeli
 
 class Place(models.Model):
     CATEGORY_CHOICES = [
-        ('study', 'Çalışma Kafesi'),
+        ('study', 'Study Cafes'),
         ('family', 'Family Places'),
         ('romantic', 'Romantic Place'),
-        ('casual', 'Sıradan Kafe'),
-        ('luxury', 'Lüks Kafe'),
-        ('outdoor', 'Açık Hava Mekanı'),
-        ('vegan', 'Vegan Dostu Kafe'),
-        ('pet_friendly', 'Evcil Hayvan Dostu'),
-        ('breakfast', 'Kahvaltı Mekanı'),
-        ('dessert', 'Tatlıcı / Pastane'),
-        ('book_cafe', 'Kitap Kafesi'),
-        ('cozy', 'Samimi ve Sakin Mekan'),
-        ('fast_food', 'Hızlı Yemek'),
-        ('themed', 'Tematik Kafe'),
-        ('music', 'Canlı Müzikli Mekan'),   
+        ('casual', 'Casual Cafes'),
+        ('luxury', 'Luxury Cafes'),
+        ('outdoor', 'Outdoor Place'),
+        ('vegan', 'Vegan Friendly Cafes'),
+        ('pet_friendly', 'Pet Friendly Cafes'),
+        ('breakfast', 'Breafast Places'),
+        ('dessert', 'Dessert'),
+        ('book_cafe', 'Book Cafes'),
+        ('cozy', 'Cozy Cafes'),
+        ('fast_food', 'Fastfood'),
+        ('themed', 'Themed Cafes'),
+        ('music', 'Live Music Places'),
     ]
 
     name = models.CharField(max_length=255)
@@ -25,7 +25,7 @@ class Place(models.Model):
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
     rating = models.FloatField(default=0.0)
     total_reviews = models.IntegerField(default=0)
-    price_range = models.CharField(max_length=20, choices=[('cheap', 'Uygun'), ('medium', 'Orta'), ('expensive', 'Pahalı')], default='medium')
+    price_range = models.CharField(max_length=20, choices=[('cheap', 'Cheap'), ('medium', 'mMdium'), ('expensive', 'Expensive')], default='medium')
     has_wifi = models.BooleanField(default=False)
 
       # 🟢 Yeni eklenen alanlar:

@@ -9,14 +9,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
 from .models import Place, Review, FavoritePlace
-from .serializers import UserSerializer, ReviewSerializer
-from rest_framework.pagination import PageNumberPagination
-
-# 🟢 Özel Sayfalama Sınıfı (Her sayfada 10 öğe olacak)
-class CustomPagination(PageNumberPagination):
-    page_size = 10
-    page_size_query_param = 'page_size'
-    max_page_size = 100
+from .serializers import UserSerializer, ReviewSerializer, PlaceSerializer
 
 # 🟢 Mekan Listeleme Fonksiyonu — ARTIK GİRİŞ GEREKMİYOR
 @api_view(['GET'])
@@ -65,13 +58,8 @@ def place_list(request):
     else:
         places = places.order_by('-rating')
 
-    # Sayfalama işlemi
-    paginator = CustomPagination()
-    result_page = paginator.paginate_queryset(places, request)
-
-    from .serializers import PlaceSerializer
-    serializer = PlaceSerializer(result_page, many=True)
-    return paginator.get_paginated_response(serializer.data)
+    serializer = PlaceSerializer(places, many=True)
+    return Response(serializer.data)
 
 # 🟢 ✅ Kategorileri Listeleme Fonksiyonu
 @api_view(['GET'])
@@ -174,11 +162,9 @@ def update_review(request, review_id):
 def place_reviews(request, place_id):
     place = get_object_or_404(Place, id=place_id)
     reviews = Review.objects.filter(place=place)
-    paginator = CustomPagination()
-    result_page = paginator.paginate_queryset(reviews, request)
-
-    serializer = ReviewSerializer(result_page, many=True)
-    return paginator.get_paginated_response(serializer.data)
+    
+    serializer = ReviewSerializer(reviews, many=True)
+    return Response(serializer.data)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])

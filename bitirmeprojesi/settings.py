@@ -155,3 +155,4 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),  # 🔹 API isteklerinde 'Authorization: Bearer <token>' kullanılacak
 }
 CORS_ALLOW_ALL_ORIGINS = True
+DEFAULT_CHARSET = 'utf-8'
