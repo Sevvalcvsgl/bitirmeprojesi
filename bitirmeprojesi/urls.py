@@ -19,5 +19,7 @@ from django.urls import path, include  # include'u ekledik
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('core.urls')),  # /api/ ile başlayan tüm istekleri core.urls'e yönlendir  
+    path('api/', include('core.urls')),
+    path('', views.home, name='home'),
+    # /api/ ile başlayan tüm istekleri core.urls'e yönlendir  
 ]
