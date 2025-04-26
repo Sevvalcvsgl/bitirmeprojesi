@@ -22,9 +22,9 @@ urlpatterns = [
     path('register/', views.register_user, name='register'),
     path('login/', views.login_user, name='login'),
     
-    path('categories/', views.category_list, name='category_list'),  # BUNU EKLEMELİSİN!
+    path('categories/', views.category_list, name='category_list'), 
 
-   # path('hello/', views.test_api),  # http://127.0.0.1:8000/api/hello/ adresine bu fonksiyon gider #entegreiçinde
+   # path('hello/', views.test_api),  # http://127.0.0.1:8000/api/hello/ adresine bu fonksiyon gider 
   
   
   

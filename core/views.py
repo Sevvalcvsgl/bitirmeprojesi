@@ -20,7 +20,7 @@ def place_list(request):
     search_query = request.GET.get('search')
     location_filter = request.GET.get('location')
     sort_by = request.GET.get('sort_by', '-rating')
-    price_filter = request.GET.get('price')
+    price_filter = request.GET.get('price_range')  
     wifi_filter = request.GET.get('wifi')
 
     places = Place.objects.all()
@@ -44,7 +44,7 @@ def place_list(request):
 
     if price_filter:
         price_levels = price_filter.split(',')
-        places = places.filter(price__in=price_levels)
+        places = places.filter(price_range__in=price_levels)
 
     if wifi_filter is not None:
         if wifi_filter.lower() == "true":
