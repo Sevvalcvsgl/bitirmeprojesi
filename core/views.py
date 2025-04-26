@@ -77,6 +77,7 @@ def register_user(request):
         return Response({'message': 'Kullanıcı başarıyla oluşturuldu!', 'user': serializer.data}, status=201)
     return Response(serializer.errors, status=400)
 
+# 🟢 Kullanıcı Giriş Fonksiyonu
 @api_view(['POST'])
 def login_user(request):
     username = request.data.get('username')
@@ -97,6 +98,7 @@ def login_user(request):
     else:
         return Response({'error': 'Geçersiz kullanıcı adı veya şifre!'}, status=400)
 
+# 🟢 Yorum Ekleme Fonksiyonu
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def add_review(request, place_id):
@@ -121,6 +123,7 @@ def add_review(request, place_id):
 
     return Response(ReviewSerializer(review).data, status=201)
 
+# 🟢 Yorum Silme Fonksiyonu
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def delete_review(request, review_id):
@@ -135,6 +138,7 @@ def delete_review(request, review_id):
     review.delete()
     return Response({"message": "Yorum başarıyla silindi!"}, status=200)
 
+# 🟢 Yorum Güncelleme Fonksiyonu
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def update_review(request, review_id):
@@ -157,6 +161,7 @@ def update_review(request, review_id):
 
     return Response(serializer.errors, status=400)
 
+# 🟢 Mekan Yorumları Listeleme Fonksiyonu
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def place_reviews(request, place_id):
@@ -166,6 +171,7 @@ def place_reviews(request, place_id):
     serializer = ReviewSerializer(reviews, many=True)
     return Response(serializer.data)
 
+# 🟢 Favori Mekan Ekleme/Kaldırma Fonksiyonu
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def toggle_favorite(request, place_id):
@@ -180,6 +186,7 @@ def toggle_favorite(request, place_id):
 
     return Response({"message": "Favorilere eklendi!"}, status=201)
 
+# 🟢 Mekan Detaylarını Getirme Fonksiyonu
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def place_detail(request, place_id):
@@ -191,3 +198,10 @@ def place_detail(request, place_id):
         "longitude": place.longitude,
     }
     return Response(data, status=200)
+
+# 🟢 Flutter Test için Basit Hello World Endpoint
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def hello_world(request):
+    return Response({"message": "Merhaba Flutter!"})
+
