@@ -25,7 +25,7 @@ class Place(models.Model):
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
     rating = models.FloatField(default=0.0)
     total_reviews = models.IntegerField(default=0)
-    price_range = models.CharField(max_length=20, choices=[('cheap', 'Cheap'), ('medium', 'Medium'), ('expensive', 'Expensive')], default='medium')
+    price_range = models.CharField(max_length=20, choices=[('cheap', 'Cheap'), ('medium', 'mMdium'), ('expensive', 'Expensive')], default='medium')
     has_wifi = models.BooleanField(default=False)
 
       # 🟢 Yeni eklenen alanlar:
@@ -55,3 +55,19 @@ class FavoritePlace(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.place.name} (Favori)"
+
+class Comment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    place = models.ForeignKey(Place, on_delete=models.CASCADE)
+    comment_text = models.TextField()
+
+    def __str__(self):
+        return f"{self.user.username} - {self.place.name}"
+
+class Rating(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    place = models.ForeignKey(Place, on_delete=models.CASCADE)
+    rating = models.IntegerField()  # 1-5 arası yıldız
+
+    def __str__(self):
+        return f"{self.user.username} - {self.place.name}: {self.rating}"

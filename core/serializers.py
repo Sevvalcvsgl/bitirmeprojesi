@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
 from rest_framework import serializers
 from .models import Place, Review  # Mekan ve yorum modellerini içe aktar
 
@@ -16,12 +17,13 @@ class UserSerializer(serializers.ModelSerializer):
             password=validated_data['password']
         )
         return user
-
+    
 # Mekan Serializer'ı (Mekan bilgilerini JSON'a çevirmek için)
 class PlaceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Place
         fields = '__all__'
+
 
 # Yorum Serializer'ı (Kullanıcıların mekanlara yaptığı yorumları JSON'a çevirmek için)
 class ReviewSerializer(serializers.ModelSerializer):
@@ -38,3 +40,17 @@ class ReviewSerializer(serializers.ModelSerializer):
         instance.rating = validated_data.get('rating', instance.rating)
         instance.save()
         return instance
+
+class CommentSerializer(serializers.ModelSerializer):
+    place_name = serializers.CharField(source='place.name', read_only=True)
+
+    class Meta:
+        model = Comment
+        fields = ['place_name', 'comment_text']
+
+class RatingSerializer(serializers.ModelSerializer):
+    place_name = serializers.CharField(source='place.name', read_only=True)
+
+    class Meta:
+        model = Rating
+        fields = ['place_name', 'rating']

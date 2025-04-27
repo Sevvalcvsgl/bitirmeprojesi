@@ -14,19 +14,15 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from core import views as core_views  # Core views import edildi
-from main import views as main_views  # Web sayfası views import edildi
-from django.urls import path, include  # include'u ekledik
 from django.contrib import admin
+from django.urls import path, include
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 urlpatterns = [
-    path('admin/', admin.site.urls),  # Admin paneli için URL
-    path('api/', include('core.urls')),  # API Endpoints için core.urls'ü dahil ediyoruz
-
-    # Web sayfası (Ana sayfa)
-    path('', main_views.home, name='home'),  # Ana sayfa için URL
-
-    # API Endpoints (core views kullanılarak)
-    path('api/places/', core_views.place_list, name='place_list'),  # Mekan listeleme API
-    path('api/reviews/<int:place_id>/', core_views.add_review, name='add_review'),  # Yorum ekleme API
+    path('admin/', admin.site.urls),
+    path('api/', include('core.urls')),  # SADECE BİR TANE olacak bu
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
