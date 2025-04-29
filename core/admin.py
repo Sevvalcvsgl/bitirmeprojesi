@@ -1,9 +1,11 @@
 from django.contrib import admin
+from .models import Place, Review, FavoritePlace 
+from .models import Rating
+from .models import Comment
 
-from django.contrib import admin
-from .models import Place  # Modelimizi içe aktardık
-
-admin.site.register(Place)  # Admin paneline ekledik
-admin.site.register(Rating)
+admin.site.register(Place)
+admin.site.register(Review)
+admin.site.register(FavoritePlace)
 admin.site.register(Comment)
+admin.site.register(Rating)
 

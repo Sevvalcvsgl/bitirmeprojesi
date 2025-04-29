@@ -1,7 +1,9 @@
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from rest_framework import serializers
-from .models import Place, Review  # Mekan ve yorum modellerini içe aktar
+from .models import Place, Review 
+from .models import Comment
+from .models import Rating  # Mekan ve yorum modellerini içe aktar
 
 # Kullanıcı Serializer'ı (Register ve Login işlemleri için)
 class UserSerializer(serializers.ModelSerializer):
@@ -54,3 +56,4 @@ class RatingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rating
         fields = ['place_name', 'rating']
+        

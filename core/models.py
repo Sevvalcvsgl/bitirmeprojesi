@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User  # Kullanıcı modeli
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Place(models.Model):
     CATEGORY_CHOICES = [
@@ -39,7 +40,7 @@ class Review(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)  # Yorumu yapan kullanıcı
     place = models.ForeignKey(Place, on_delete=models.CASCADE, related_name="reviews")  # Yoruma ait mekan
     comment = models.TextField()  # Kullanıcının yorumu
-    rating = models.IntegerField()  # 1-5 arasında bir puan
+    rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     created_at = models.DateTimeField(auto_now_add=True)  # Yorumun yapıldığı zaman
 
     def __str__(self):
@@ -56,7 +57,9 @@ class FavoritePlace(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.place.name} (Favori)"
 
-class Comment(models.Model):
+
+
+class Comment(models.Model):  # DIŞARI alındı
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     place = models.ForeignKey(Place, on_delete=models.CASCADE)
     comment_text = models.TextField()
@@ -64,10 +67,14 @@ class Comment(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.place.name}"
 
-class Rating(models.Model):
+
+
+class Rating(models.Model):  # DIŞARI alındı
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    place = models.ForeignKey(Place, on_delete=models.CASCADE)
-    rating = models.IntegerField()  # 1-5 arası yıldız
+    place = models.ForeignKey(Place, on_delete=models.CASCADE, related_name='ratings')
+    rating = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user.username} - {self.place.name}: {self.rating}"
+        return f"{self.user} - {self.place} ({self.rating})"
+    

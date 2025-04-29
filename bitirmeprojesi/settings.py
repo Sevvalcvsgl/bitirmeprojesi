@@ -12,6 +12,13 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta  # JWT Token Süresi İçin
+import os  # dosyanın en üstüne, pathlib ile birlikte
+
+# Mevcut satırın altına ekle:
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # deployment için
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,8 +32,7 @@ SECRET_KEY = 'django-insecure-*m85cr5t#%$hpx*1))zmb+frbjtpn01*2!sao%st-ivhj!r^-3
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['10.0.2.2', '127.0.0.1', 'localhost', 'bitirmeprojesi-1xwg.onrender.com']
-   # 🔹 Boş liste yerine localhost eklendi. , ekleme yaptım -bp
+ALLOWED_HOSTS = ['10.0.2.2', '127.0.0.1', 'localhost']   # 🔹 Boş liste yerine localhost eklendi. , ekleme yaptım -bp
 
 # Application definition
 
@@ -38,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
+    'django_extensions',
 
     'main',
     'rest_framework',  # Django REST Framework
@@ -74,6 +81,7 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = 'bitirmeprojesi.wsgi.application'
 
 
@@ -104,6 +112,10 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
+]
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
 ]
 
 
