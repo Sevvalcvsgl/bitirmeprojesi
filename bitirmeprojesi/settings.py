@@ -33,7 +33,7 @@ SECRET_KEY = 'django-insecure-*m85cr5t#%$hpx*1))zmb+frbjtpn01*2!sao%st-ivhj!r^-3
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['10.0.2.2', '127.0.0.1', 'localhost']   # 🔹 Boş liste yerine localhost eklendi. , ekleme yaptım -bp
+ALLOWED_HOSTS = ['bitirmeprojesi-1xwg.onrender.com', '10.0.2.2', '127.0.0.1', 'localhost']   # 🔹 Boş liste yerine localhost eklendi. , ekleme yaptım -bp
 
 # Application definition
 
