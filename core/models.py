@@ -12,7 +12,7 @@ class Place(models.Model):
         ('outdoor', 'Outdoor Place'),
         ('vegan', 'Vegan Friendly Cafes'),
         ('pet_friendly', 'Pet Friendly Cafes'),
-        ('breakfast', 'Breafast Places'),
+        ('breakfast', 'Breakfast Places'),
         ('dessert', 'Dessert'),
         ('book_cafe', 'Book Cafes'),
         ('cozy', 'Cozy Cafes'),
