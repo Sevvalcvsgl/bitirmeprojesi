@@ -49,7 +49,7 @@ def place_list(request):
 
     if price_filter:
         price_levels = price_filter.split(',')
-        places = places.filter(price__in=price_levels)
+        places = places.filter(price_range__in=price_levels)
 
     if wifi_filter is not None:
         if wifi_filter.lower() == "true":
